@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FS-Snap", "FS-Snap\FS-Snap.fsproj", "{90E84150-2643-4FBD-B683-A6F8C3985E51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90E84150-2643-4FBD-B683-A6F8C3985E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90E84150-2643-4FBD-B683-A6F8C3985E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90E84150-2643-4FBD-B683-A6F8C3985E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90E84150-2643-4FBD-B683-A6F8C3985E51}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FEE3ABCF-F092-4438-8760-73CB720BCEA7}
+	EndGlobalSection
+EndGlobal
