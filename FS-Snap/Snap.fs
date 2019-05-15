@@ -12,10 +12,14 @@ type Card = {
     Face: Face
 }
 
-let isNb str = str |> Seq.forall Char.IsDigit
+type Result = Player1Wins | Player2Wins | Tie
+
+type Players = Player1 | Player2
+
+let isNb str = str |> Seq.forall Char.IsDigit  // TODO: to fix
 
 let selectNbOfPacks () = 
-    printfn "Please enter the number of packs to use"
+    printfn "Please enter the number of packs to use:  (default 1)"
     let input = Console.ReadLine()
     match isNb input with
     | true -> int32 input |> Some
@@ -25,7 +29,7 @@ let selectMatchingCondition () =
     printfn "Please select the matching condition to use:"
     printfn " 1) Face value"
     printfn " 2) Suit"
-    printfn " 3) Both"
+    printfn " 3) Both  (default)"
     let input = Console.ReadLine()
     match isNb input with
     | true -> int32 input |> Some
@@ -38,6 +42,42 @@ let generateDecks n =
         for s in suitTypes do 
         for f in faceTypes do 
         yield {
-           Suit = FSharpValue.MakeUnion(s, [||]) :?> Suit;  
+           Suit = FSharpValue.MakeUnion(s, [||]) :?> Suit;
            Face = FSharpValue.MakeUnion(f, [||]) :?> Face;
        }];
+
+let shuffleDecks decks = id decks  // TODO: implement shuffling
+
+let chooseWinner (player1Cards: List<Card>) (player2Cards: List<Card>) =
+    match (player1Cards.Length - player2Cards.Length) with
+    | n when n > 0 -> Result.Player1Wins
+    | n when n = 0 -> Result.Tie
+    | _ -> Result.Player2Wins
+
+let takeTopCard list =
+    match list with
+    | s::q -> (s, q)
+    | _ -> failwith("Shouldn't happen")
+
+let chooseRandomPlayer () = 
+    match System.Random().Next(2) with
+    | 0 -> Players.Player1
+    | _ -> Players.Player2
+
+let rec play snapFn (decks:List<Card>) (playedCards:List<Card>) (player1Cards:List<Card>) (player2Cards:List<Card>) =
+    if (decks.IsEmpty) then
+        chooseWinner player1Cards player2Cards
+    else
+        let currentCard, newDecks = takeTopCard decks
+        if (not playedCards.IsEmpty && snapFn playedCards.Head currentCard) then
+            let choosenPlayer = chooseRandomPlayer ()
+            let newPlayer1Cards = match choosenPlayer with
+                                  | Players.Player1 -> currentCard::playedCards@player1Cards
+                                  | Players.Player2 -> player1Cards
+            let newPlayer2Cards = match choosenPlayer with
+                                  | Players.Player1 -> player2Cards
+                                  | Players.Player2 -> currentCard::playedCards@player2Cards
+
+            play snapFn newDecks [] newPlayer1Cards newPlayer2Cards 
+        else
+            play snapFn newDecks (currentCard::playedCards) player1Cards player2Cards

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Include="Snap.fs" />
-    <None Include="ReadMe.md" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
