@@ -16,9 +16,9 @@ let main argv =
 
     printfn "n is %i and matchingConditionNo is %i" n matchingConditionNo
 
-    let cards = generateDecks n |> shuffleDecks
+    let cards = generateDecks n |> List.toArray |> FisherYatesShuffle |> Seq.toList
 
-    assert (cards.Length = n*52)
+    assert (cards.Length = n * 52)
 
     let snapFn card1 card2 =
         match matchingConditionNo with

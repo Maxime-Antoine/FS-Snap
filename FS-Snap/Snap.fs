@@ -16,7 +16,8 @@ type Result = Player1Wins | Player2Wins | Tie
 
 type Players = Player1 | Player2
 
-let isNb str = str |> Seq.forall Char.IsDigit  // TODO: to fix
+let isNonEmptyDigit char = Char.IsDigit char && not (Char.IsWhiteSpace char)
+let isNb str = str |> Seq.forall isNonEmptyDigit && not (Seq.isEmpty str)
 
 let selectNbOfPacks () = 
     printfn "Please enter the number of packs to use:  (default 1)"
@@ -46,7 +47,20 @@ let generateDecks n =
            Face = FSharpValue.MakeUnion(f, [||]) :?> Face;
        }];
 
-let shuffleDecks decks = id decks  // TODO: implement shuffling
+let FisherYatesShuffle (array: array<'a>) = 
+    let availableVals = Array.init array.Length (fun i -> (i, true))
+    let random = new Random()
+    let nextItem nLeft =
+        let nItem = random.Next(0, nLeft)
+        let index =
+            availableVals
+            |> Seq.filter (fun (_, f) -> f)
+            |> Seq.item nItem
+            |> fst
+        availableVals.[index] <- (index, false)
+        array.[index]
+    seq {(array.Length) .. -1 .. 1}
+    |> Seq.map (fun i -> nextItem i)
 
 let chooseWinner (player1Cards: List<Card>) (player2Cards: List<Card>) =
     match (player1Cards.Length - player2Cards.Length) with
