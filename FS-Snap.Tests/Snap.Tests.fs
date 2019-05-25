@@ -33,3 +33,20 @@ type ChooseWinnerTest () =
         let winner = chooseWinner player1Cards player2Cards
 
         Assert.AreEqual(winner, Result.Tie)
+
+[<TestClass>]
+type IsNbTest () =
+    
+    [<TestMethod>]
+    member this.HandlesNb () =
+        let nb = "12345"
+        Assert.IsTrue(isNb nb)
+
+    [<TestMethod>]
+    member this.HandlesString () =
+        let str = "abc123"
+        Assert.IsFalse(isNb str)
+
+    [<TestMethod>]
+    member this.HandlesEmptyString () =
+        Assert.IsFalse(isNb "")
